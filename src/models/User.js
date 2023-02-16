@@ -1,7 +1,7 @@
 import Sequelize, { Model } from 'sequelize';
 import bcryptjs from 'bcryptjs';
 
-export default class Aluno extends Model {
+export default class User extends Model {
   static init(sequelize) {
     super.init(
       {
@@ -18,9 +18,12 @@ export default class Aluno extends Model {
         email: {
           type: Sequelize.STRING,
           defaultValue: '',
+          unique: {
+            msg: 'Email já existe',
+          },
           validate: {
             isEmail: {
-              msg: 'E-mail invalido',
+              msg: 'Email inválido',
             },
           },
         },
@@ -34,7 +37,7 @@ export default class Aluno extends Model {
           validate: {
             len: {
               args: [6, 50],
-              msg: 'A senha precisa ter entre 6; e 50 caracteres',
+              msg: 'A senha precisa ter entre 6 e 50 caracteres',
             },
           },
         },
@@ -43,6 +46,7 @@ export default class Aluno extends Model {
         sequelize,
       },
     );
+
     this.addHook('beforeSave', async (user) => {
       user.password_hash = await bcryptjs.hash(user.password, 8);
     });
