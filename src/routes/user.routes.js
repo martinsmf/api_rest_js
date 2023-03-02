@@ -8,7 +8,7 @@ const router = new Router();
 // router.get('/', userController.index); // Lista usuários
 // router.get('/:id', userController.show); // Lista um usuário
 
-router.post('/', userController.store);
+router.post('/', loginRequire, userController.store);
 router.put('/', loginRequire, userController.update);
 router.delete('/', loginRequire, userController.delete);
 
